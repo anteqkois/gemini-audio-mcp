@@ -1,7 +1,6 @@
 # Gemini Audio MCP
 
 [![PyPI version](https://img.shields.io/pypi/v/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
-[![Downloads](https://static.pepy.tech/badge/gemini-audio-mcp)](https://pepy.tech/project/gemini-audio-mcp)
 [![Python Versions](https://img.shields.io/pypi/pyversions/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 

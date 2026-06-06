@@ -15,7 +15,7 @@ def get_api_keys():
 def process_audio(
     file_path: str,
     prompt: str = "Please transcribe this audio exactly as spoken.",
-    model_name: str = "gemini-2.5-flash"
+    model_name: str = ""
 ) -> str:
     """
     Processes an audio or video file using Google's Gemini multimodal models.
@@ -34,6 +34,9 @@ def process_audio(
     api_keys = get_api_keys()
     if not api_keys:
         return "Error: GEMINI_API_KEY environment variable is not set."
+        
+    if not model_name:
+        model_name = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
     
     if not os.path.isfile(file_path):
         return f"Error: File not found at path: {file_path}"

@@ -70,7 +70,35 @@ Processes an audio or video file using Google's Gemini models.
 - `prompt` (string, optional): Instructions for the model. Default is *"Please transcribe this audio exactly as spoken."*
 - `model_name` (string, optional): The Gemini model to use. Default is `"models/gemini-1.5-flash"`.
 
+## Supported File Formats
+
+Gemini 1.5 Flash natively supports a wide range of audio and video formats via the File API.
+
+**Audio formats:**
+- WAV (`audio/wav`)
+- MP3 (`audio/mp3`)
+- AIFF (`audio/aiff`)
+- AAC (`audio/aac`)
+- OGG Vorbis (`audio/ogg`)
+- FLAC (`audio/flac`)
+
+**Video formats:**
+- MP4 (`video/mp4`)
+- MPEG (`video/mpeg`)
+- MOV (`video/quicktime`)
+- AVI (`video/x-msvideo`)
+- FLV (`video/x-flv`)
+- MPG (`video/mpeg`)
+- WEBM (`video/webm`)
+- WMV (`video/x-ms-wmv`)
+- 3GPP (`video/3gpp`)
+
+> For more details, refer to the official Google Gemini API documentation for [Audio understanding](https://ai.google.dev/gemini-api/docs/audio) and [Video understanding](https://ai.google.dev/gemini-api/docs/vision).
+
 ## Release Notes
+
+### v0.1.3
+- **Documentation:** Added a comprehensive list of supported audio and video formats.
 
 ### v0.1.2
 - **Initial Release:** Core processing via `gemini-1.5-flash`.

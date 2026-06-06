@@ -1,7 +1,7 @@
 # Gemini Audio MCP
 
 [![PyPI version](https://img.shields.io/pypi/v/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
-[![Downloads](https://img.shields.io/pypi/dm/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
+[![Downloads](https://static.pepy.tech/badge/gemini-audio-mcp)](https://pepy.tech/project/gemini-audio-mcp)
 [![Python Versions](https://img.shields.io/pypi/pyversions/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -68,7 +68,7 @@ Processes an audio or video file using Google's Gemini models.
 **Parameters:**
 - `file_path` (string, required): The absolute path to the local audio or video file.
 - `prompt` (string, optional): Instructions for the model. Default is *"Please transcribe this audio exactly as spoken."*
-- `model_name` (string, optional): The Gemini model to use. Default is `"models/gemini-1.5-flash"`.
+- `model_name` (string, optional): The Gemini model to use. Default is `"models/gemini-1.5-flash"`. Supported models include `models/gemini-1.5-flash`, `models/gemini-1.5-pro`, `models/gemini-1.5-flash-8b`, and `models/gemini-2.0-flash-exp`.
 
 ## Supported File Formats
 
@@ -96,6 +96,9 @@ Gemini 1.5 Flash natively supports a wide range of audio and video formats via t
 > For more details, refer to the official Google Gemini API documentation for [Audio understanding](https://ai.google.dev/gemini-api/docs/audio) and [Video understanding](https://ai.google.dev/gemini-api/docs/vision).
 
 ## Release Notes
+
+### v0.1.4
+- **Documentation:** Fixed badges and added supported models to the tool description.
 
 ### v0.1.3
 - **Documentation:** Added a comprehensive list of supported audio and video formats.

@@ -25,6 +25,11 @@ def process_audio(
         file_path: The absolute path to the local audio/video file.
         prompt: Instructions for the model (e.g., 'Transcribe this', 'Summarize this in Polish').
         model_name: The Gemini model to use (default: models/gemini-1.5-flash).
+                    Supported models include:
+                    - models/gemini-1.5-flash
+                    - models/gemini-1.5-pro
+                    - models/gemini-1.5-flash-8b
+                    - models/gemini-2.0-flash-exp
     """
     api_keys = get_api_keys()
     if not api_keys:

@@ -8,8 +8,9 @@ version = "0.1.0"
 description = "MCP server for processing audio and video files using Google's Gemini multimodal models"
 readme = "README.md"
 authors = [
-    { name = "Anteqkois", email = "anteqkois@example.com" }
+    { name = "Anteqkois", email = "anteqkois.dev@gmail.com" }
 ]
+urls = { Repository = "https://github.com/anteqkois/gemini-audio-mcp" }
 requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.1.2",

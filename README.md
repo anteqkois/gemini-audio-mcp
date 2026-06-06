@@ -72,7 +72,7 @@ Processes an audio or video file using Google's Gemini models.
 
 ## Release Notes
 
-### v0.1.1
+### v0.1.2
 - **Initial Release:** Core processing via `gemini-1.5-flash`.
 - **Automatic Fallback:** Added support for multiple API keys in `GEMINI_API_KEY` (comma-separated) to prevent interruptions during rate limits.
 - **Native execution:** Works securely out-of-the-box via `uvx`.

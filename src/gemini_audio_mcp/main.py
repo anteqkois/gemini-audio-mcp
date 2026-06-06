@@ -5,6 +5,12 @@ import time
 
 mcp = FastMCP("Gemini Audio MCP")
 
+def get_api_keys():
+    keys_str = os.environ.get("GEMINI_API_KEY")
+    if keys_str:
+        return [k.strip() for k in keys_str.split(",") if k.strip()]
+    return []
+
 @mcp.tool()
 def process_audio(
     file_path: str,
@@ -20,43 +26,56 @@ def process_audio(
         prompt: Instructions for the model (e.g., 'Transcribe this', 'Summarize this in Polish').
         model_name: The Gemini model to use (default: models/gemini-1.5-flash).
     """
-    api_key = os.environ.get("GEMINI_API_KEY")
-    if not api_key:
+    api_keys = get_api_keys()
+    if not api_keys:
         return "Error: GEMINI_API_KEY environment variable is not set."
     
     if not os.path.isfile(file_path):
         return f"Error: File not found at path: {file_path}"
 
-    genai.configure(api_key=api_key)
+    last_error = None
     
-    sample_file = None
-    try:
-        # Upload the file
-        sample_file = genai.upload_file(path=file_path)
-        
-        # Wait for the file to be processed
-        while sample_file.state.name == "PROCESSING":
-            time.sleep(2)
-            sample_file = genai.get_file(sample_file.name)
+    for attempt, api_key in enumerate(api_keys):
+        try:
+            genai.configure(api_key=api_key)
+            sample_file = None
             
-        if sample_file.state.name == "FAILED":
-            return "Error: File processing failed on Gemini servers."
+            # Upload the file
+            sample_file = genai.upload_file(path=file_path)
             
-        # Generate content
-        model = genai.GenerativeModel(model_name=model_name)
-        response = model.generate_content([sample_file, prompt])
-        
-        return response.text
-        
-    except Exception as e:
-        return f"Error processing file: {str(e)}"
-    finally:
-        # Always cleanup the uploaded file
-        if sample_file:
+            # Wait for the file to be processed
+            while sample_file.state.name == "PROCESSING":
+                time.sleep(2)
+                sample_file = genai.get_file(sample_file.name)
+                
+            if sample_file.state.name == "FAILED":
+                raise Exception("File processing failed on Gemini servers.")
+                
+            # Generate content
+            model = genai.GenerativeModel(model_name=model_name)
+            response = model.generate_content([sample_file, prompt])
+            
+            # Cleanup and return
             try:
                 genai.delete_file(sample_file.name)
             except Exception:
                 pass
+                
+            return response.text
+            
+        except Exception as e:
+            last_error = str(e)
+            if 'sample_file' in locals() and sample_file:
+                try:
+                    genai.delete_file(sample_file.name)
+                except Exception:
+                    pass
+            
+            if attempt < len(api_keys) - 1:
+                time.sleep(1)
+                continue
+            else:
+                return f"Error processing file after trying {len(api_keys)} key(s). Last error: {last_error}"
 
 def main():
     mcp.run()

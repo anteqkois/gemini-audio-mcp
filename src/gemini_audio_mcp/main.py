@@ -1,6 +1,6 @@
 from mcp.server.fastmcp import FastMCP
 import os
-import google.generativeai as genai
+from google import genai
 import time
 
 mcp = FastMCP("Gemini Audio MCP")
@@ -15,7 +15,7 @@ def get_api_keys():
 def process_audio(
     file_path: str,
     prompt: str = "Please transcribe this audio exactly as spoken.",
-    model_name: str = "models/gemini-1.5-flash"
+    model_name: str = "gemini-2.5-flash"
 ) -> str:
     """
     Processes an audio or video file using Google's Gemini multimodal models.
@@ -42,27 +42,29 @@ def process_audio(
     
     for attempt, api_key in enumerate(api_keys):
         try:
-            genai.configure(api_key=api_key)
+            client = genai.Client(api_key=api_key)
             sample_file = None
             
             # Upload the file
-            sample_file = genai.upload_file(path=file_path)
+            sample_file = client.files.upload(file=file_path)
             
             # Wait for the file to be processed
             while sample_file.state.name == "PROCESSING":
                 time.sleep(2)
-                sample_file = genai.get_file(sample_file.name)
+                sample_file = client.files.get(name=sample_file.name)
                 
             if sample_file.state.name == "FAILED":
                 raise Exception("File processing failed on Gemini servers.")
                 
             # Generate content
-            model = genai.GenerativeModel(model_name=model_name)
-            response = model.generate_content([sample_file, prompt])
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[sample_file, prompt]
+            )
             
             # Cleanup and return
             try:
-                genai.delete_file(sample_file.name)
+                client.files.delete(name=sample_file.name)
             except Exception:
                 pass
                 
@@ -72,7 +74,7 @@ def process_audio(
             last_error = str(e)
             if 'sample_file' in locals() and sample_file:
                 try:
-                    genai.delete_file(sample_file.name)
+                    client.files.delete(name=sample_file.name)
                 except Exception:
                     pass
             

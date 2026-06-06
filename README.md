@@ -1,5 +1,10 @@
 # Gemini Audio MCP
 
+[![PyPI version](https://img.shields.io/pypi/v/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
+[![Downloads](https://img.shields.io/pypi/dm/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/gemini-audio-mcp.svg)](https://pypi.org/project/gemini-audio-mcp/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 A dedicated [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that provides high-quality audio and video transcription, summarization, and reasoning using Google's native multimodal Gemini models (`gemini-1.5-flash`).
 
 ## Why this exists?
@@ -45,6 +50,16 @@ Add the following configuration to your client's MCP settings file (usually `set
 The server requires a Google Gemini API key to function. 
 Set the `GEMINI_API_KEY` environment variable in your terminal before launching your agent, or define it in your MCP configuration file.
 
+**Multi-Key Fallback:** 
+You can provide a single key or a **comma-separated list of keys**. If one key encounters a rate limit or quota issue (e.g., 429 Resource Exhausted), the server will automatically retry the request using the next key in the list.
+
+```json
+{
+  "env": {
+    "GEMINI_API_KEY": "key1,key2,key3"
+  }
+}
+```
 ## Provided Tools
 
 ### `process_audio`
@@ -54,6 +69,13 @@ Processes an audio or video file using Google's Gemini models.
 - `file_path` (string, required): The absolute path to the local audio or video file.
 - `prompt` (string, optional): Instructions for the model. Default is *"Please transcribe this audio exactly as spoken."*
 - `model_name` (string, optional): The Gemini model to use. Default is `"models/gemini-1.5-flash"`.
+
+## Release Notes
+
+### v0.1.1
+- **Initial Release:** Core processing via `gemini-1.5-flash`.
+- **Automatic Fallback:** Added support for multiple API keys in `GEMINI_API_KEY` (comma-separated) to prevent interruptions during rate limits.
+- **Native execution:** Works securely out-of-the-box via `uvx`.
 
 ## License
 Open Source (MIT)
